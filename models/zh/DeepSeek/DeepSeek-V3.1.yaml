@@ -12,7 +12,7 @@ meta:
     - deepseek-ai/DeepSeek-V3.2
   performance_headline: 685B/37B MoE — Atlas 800 A3 单机 W8A8 推理、A2 多机 DP、A3 / Ascend 950DT 2P1D PD 分离
   hardware:
-    atlas_800_a3: experimental
+    atlas_800_a3: verified   # v0.23.0 教程 §5.1/§7/§8 载官方 A3 部署与实测结果(依 GLM-5/V4-Flash 等存量惯例;第一方复验待资源,见 PR 说明)
     atlas_800_a2: experimental
     ascend_950dt: experimental
 
@@ -268,7 +268,7 @@ scenarios:
         export VLLM_ASCEND_BALANCE_SCHEDULING=1
         export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
 
-        vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+        vllm serve your_model_path \
         --host 0.0.0.0 \
         --port 8015 \
         --data-parallel-size 4 \
@@ -333,7 +333,7 @@ scenarios:
 
         export VLLM_ASCEND_ENABLE_MLAPO=1
 
-        vllm serve /weight/dsk-v3.1-w4a4_mlp-w8a8c8_attn-0618-full \
+        vllm serve your_model_path \
         --host 0.0.0.0 \
         --port 8015 \
         --max_model_len 135168 \
@@ -406,7 +406,7 @@ scenarios:
         export HCCL_INTRA_PCIE_ENABLE=1
         export HCCL_INTRA_ROCE_ENABLE=0
 
-        vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+        vllm serve your_model_path \
         --host 0.0.0.0 \
         --port 8004 \
         --data-parallel-size 4 \
@@ -459,7 +459,7 @@ scenarios:
         export HCCL_INTRA_PCIE_ENABLE=1
         export HCCL_INTRA_ROCE_ENABLE=0
 
-        vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+        vllm serve your_model_path \
         --host 0.0.0.0 \
         --port 8004 \
         --headless \
@@ -562,7 +562,7 @@ scenarios:
 
            export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
 
-           vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+           vllm serve your_model_path \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -636,7 +636,7 @@ scenarios:
 
            export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
 
-           vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+           vllm serve your_model_path \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -710,7 +710,7 @@ scenarios:
            export ASCEND_RT_VISIBLE_DEVICES=$1
            export LD_LIBRARY_PATH=/usr/local/Ascend/ascend-toolkit/latest/python/site-packages/mooncake:$LD_LIBRARY_PATH
 
-           vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+           vllm serve your_model_path \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -783,7 +783,7 @@ scenarios:
            export ASCEND_RT_VISIBLE_DEVICES=$1
            export LD_LIBRARY_PATH=/usr/local/Ascend/ascend-toolkit/latest/python/site-packages/mooncake:$LD_LIBRARY_PATH
 
-           vllm serve /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot \
+           vllm serve your_model_path \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -947,7 +947,7 @@ scenarios:
            export DYNAMIC_EPLB="true"
 
            export ASCEND_RT_VISIBLE_DEVICES=$1
-           vllm serve /weight/dsk_v3.1-T-w8a8c8_attn-0506-full/  \
+           vllm serve your_model_path  \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -1011,7 +1011,7 @@ scenarios:
            export VLLM_ASCEND_ENABLE_MLAPO=1
            export ASCEND_RT_VISIBLE_DEVICES=$1
 
-           vllm serve /weight/dsk_v3.1-T-w8a8c8_attn-0506-full/ \
+           vllm serve your_model_path \
                --host 0.0.0.0 \
                --port $2 \
                --data-parallel-size $3 \
@@ -1117,7 +1117,7 @@ evaluation:
         使用 vLLM Benchmark，以 `serve` 为例：
 
         ```shell
-        vllm bench serve --model /weights/DeepSeek-V3.1-w8a8-mtp-QuaRot --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
+        vllm bench serve --model deepseek_v3 --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
         ```
 
         `vllm bench` 有三个子命令：`latency`（单批次延迟）、`serve`（在线服务吞吐）、`throughput`（离线推理吞吐）。详见 [vllm benchmark](https://docs.vllm.ai/en/latest/benchmarking/)。
