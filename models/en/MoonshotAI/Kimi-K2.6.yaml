@@ -14,7 +14,7 @@ meta:
     - "moonshotai/Kimi-K2.5"
   performance_headline: "1T/32B MoE multimodal agentic model — single-node and multi-node PD serving with W4A8 weights"
   hardware:
-    atlas_800_a3: verified
+    atlas_800_a3: verified   # tutorial §5-§8 publish official deployment & measured results on A3 (repo convention per GLM-5/V4-Flash; first-party re-run pending, see PR description)
     atlas_800_a2: verified
 
 model:
@@ -335,7 +335,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
       export VLLM_ASCEND_BALANCE_SCHEDULING=0
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --quantization ascend \
           --tool-call-parser kimi_k2 \
           --reasoning-parser kimi_k2 \
@@ -470,7 +470,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
       export ASCEND_RT_VISIBLE_DEVICES=$1
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --host 0.0.0.0 \
           --port $2 \
           --data-parallel-size $3 \
@@ -540,7 +540,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_MLAPO=1
       export ASCEND_RT_VISIBLE_DEVICES=$1
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --host 0.0.0.0 \
           --port $2 \
           --data-parallel-size $3 \
@@ -721,7 +721,7 @@ evaluation:
       Take the `serve` as an example. Run the code as follows.
 
       ```shell
-      vllm bench serve --model Eco-Tech/Kimi-K2.6-w4a8 --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
+      vllm bench serve --model kimi_k26 --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
       ```
 
       After about several minutes, you can get the performance evaluation result.

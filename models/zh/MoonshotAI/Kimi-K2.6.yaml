@@ -14,7 +14,7 @@ meta:
     - "moonshotai/Kimi-K2.5"
   performance_headline: "1T/32B MoE 多模态智能体模型 — 基于 W4A8 权重的单机与多机 PD 分离部署"
   hardware:
-    atlas_800_a3: verified
+    atlas_800_a3: verified   # 教程 §5-§8 载官方 A3 部署与实测结果(依 GLM-5/V4-Flash 等存量惯例;第一方复验待资源,见 PR 说明)
     atlas_800_a2: verified
 
 model:
@@ -332,7 +332,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
       export VLLM_ASCEND_BALANCE_SCHEDULING=0
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --quantization ascend \
           --tool-call-parser kimi_k2 \
           --reasoning-parser kimi_k2 \
@@ -467,7 +467,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
       export ASCEND_RT_VISIBLE_DEVICES=$1
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --host 0.0.0.0 \
           --port $2 \
           --data-parallel-size $3 \
@@ -537,7 +537,7 @@ scenarios:
       export VLLM_ASCEND_ENABLE_MLAPO=1
       export ASCEND_RT_VISIBLE_DEVICES=$1
 
-      vllm serve Eco-Tech/Kimi-K2.6-W4A8 \
+      vllm serve your_model_path \
           --host 0.0.0.0 \
           --port $2 \
           --data-parallel-size $3 \
@@ -718,7 +718,7 @@ evaluation:
       以 `serve` 为例，运行如下命令。
 
       ```shell
-      vllm bench serve --model Eco-Tech/Kimi-K2.6-w4a8 --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
+      vllm bench serve --model kimi_k26 --dataset-name random --random-input 1024 --num-prompts 200 --request-rate 1 --save-result --result-dir ./
       ```
 
       大约几分钟后即可得到性能评估结果。
