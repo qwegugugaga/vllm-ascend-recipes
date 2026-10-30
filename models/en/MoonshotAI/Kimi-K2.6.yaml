@@ -327,10 +327,11 @@ scenarios:
       # [Optional] jemalloc
       # jemalloc is for better performance, if `libjemalloc.so` is installed on your machine, you can turn it on.
       export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libjemalloc.so.2:$LD_PRELOAD
-      echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-      sysctl -w vm.swappiness=0
-      sysctl -w kernel.numa_balancing=0
-      sysctl -w kernel.sched_migration_cost_ns=50000
+      # System tuning (requires root; skipped automatically in unprivileged environments)
+      echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor 2>/dev/null || true
+      sysctl -w vm.swappiness=0 2>/dev/null || true
+      sysctl -w kernel.numa_balancing=0 2>/dev/null || true
+      sysctl -w kernel.sched_migration_cost_ns=50000 2>/dev/null || true
       export HCCL_BUFFSIZE=600
       export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
       export VLLM_ASCEND_BALANCE_SCHEDULING=0
