@@ -249,10 +249,10 @@ scenarios:
 
       ```shell
         #!/bin/sh
-        # this obtained through ifconfig
-        # nic_name is the network interface name corresponding to local_ip of the current node
-        nic_name="xxxx"
-        local_ip="xxxx"
+        # nic_name/local_ip: obtain through ifconfig on your machine. When
+        # unset, both are auto-detected so the command also runs as-is.
+        nic_name="${nic_name:-$(ip -o -4 addr show scope global | cut -d' ' -f2 | head -n 1)}"
+        local_ip="${local_ip:-$(hostname -I | cut -d' ' -f1)}"
 
         # [Optional] jemalloc
         # jemalloc is for better performance, if `libjemalloc.so` is installed on your machine, you can turn it on.
@@ -267,6 +267,8 @@ scenarios:
         export HCCL_SOCKET_IFNAME=$nic_name
         export VLLM_ASCEND_BALANCE_SCHEDULING=1
         export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
+        # 700G-class weight loading exceeds the default engine-ready timeout
+        export VLLM_ENGINE_READY_TIMEOUT_S=7200
 
         vllm serve your_model_path \
         --host 0.0.0.0 \
@@ -332,6 +334,8 @@ scenarios:
         export TASK_QUEUE_ENABLE=1
 
         export VLLM_ASCEND_ENABLE_MLAPO=1
+        # 700G-class weight loading exceeds the default engine-ready timeout
+        export VLLM_ENGINE_READY_TIMEOUT_S=7200
 
         vllm serve your_model_path \
         --host 0.0.0.0 \
